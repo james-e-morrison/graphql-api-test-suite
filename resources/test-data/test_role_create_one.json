@@ -1,0 +1,84 @@
+{
+  "tc 1.1 Create a new role": {
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"QA Manager\"){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "QA Manager",
+        "deletedAt": null,
+        "skills": []
+      }
+    },
+    "schema": "roleCreateOne"
+  },
+
+  "tc 1.2 Create a new role with blank name": {
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "",
+        "deletedAt": null,
+        "skills": []
+      }
+    },
+    "schema": "roleCreateOne"
+  },
+
+  "tc 1.3 Create a new role with numeric chars for name": {
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"123456789\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "123456789",
+        "deletedAt": null,
+        "skills": []
+      }
+    },
+    "schema": "roleCreateOne"
+  },
+
+  "tc 1.4 Create a new role with alphanumeric chars for name": {
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"a12v345asd6fd78a9\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "a12v345asd6fd78a9",
+        "deletedAt": null,
+        "skills": []
+      }
+    },
+    "schema": "roleCreateOne"
+  },
+
+  "tc 1.5 Create a new role with all possible params returned": {
+    "comment": "RoleCreateOne can ask for a RoleSkill to be returned and all the Skills within this role skill to be returned. But they will always be null as this is a new object.",
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"Business Analyst\"){id, name, createdAt, updatedAt, deletedAt, skills{id, roleId, createdAt, deletedAt, skillId, updatedAt, weight, skill{id, name, createdAt, deletedAt, updatedAt}}}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "Business Analyst",
+        "deletedAt": null,
+        "skills": []
+      }
+    },
+    "schema": "roleCreateOne"
+  },
+
+  "tc 1.6 Create a new role asking for id name to be returned": {
+    "headers": "",
+    "payload": "mutation{RoleCreateOne(name: \"SDET\"){id, name}}",
+    "expected-status-code": 200,
+    "expected-response": {
+      "RoleCreateOne":{
+        "name": "SDET"
+      }
+    },
+    "schema": "roleCreateOne"
+  }
+}

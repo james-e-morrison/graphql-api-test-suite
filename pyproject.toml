@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "api-test-suite"
+version = "0.1.0"
+description = "Example simple test automation framwork for testing GraphQL API"
+authors = ["James Morrison"]
+readme = "README.md"
+packages = [{include = "api_test_suite"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.31.0"
+pytest = "^7.4.0"
+pytest-xdist = "^3.3.1"
+pytest-repeat = "^0.9.1"
+jsonschema = "^4.17.3"
+
+[tool.poetry.group.dev.dependencies]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "data": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "RoleCreateOne": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "createdAt": {
+                "type": "string"
+              },
+              "deletedAt": {
+                "type": "null"
+              },
+              "id": {
+                "type": "integer"
+              },
+              "name": {
+                "type": "string"
+              },
+              "skills": {
+                "type": "array",
+                "items": {}
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "RoleCreateOne"
+        ]
+      }
+    },
+    "required": [
+      "data"
+    ]
+  }
+  
