@@ -78,6 +78,9 @@ def validate_id(id: int):
     assert isinstance(id, int)
     assert id < 10000000 # sanity check to ensure ID is not at a silly count
 
+def validate_name(name: str):
+    pass
+
 
 def validate_datetime_format(dt: str):
     '''
@@ -100,22 +103,23 @@ def validate_json(data: str, schema_name: str):
         raise jsonschema.exceptions.ValidationError(f"JSON data failed schema validation with error message: {e.message}. Path: {e.path}")
 
 
-def check_for_unexpected_keys(actual: dict, expected: dict) -> bool:
-    '''
-    Recursively compare that every key returned in the api response is explicitly checked for
-    in the test data's expected response. This ensures that no unexpected values sneak into the api
-    response without getting caught. This behaviour is already partially covered by validating JSON
-    against a schema but this allows for us to catch valid objects and fields (as allowed by the schema)
-    from appearing when they are not expected. This helps enforce snapshot testing.
-    '''
-    
-    for key in actual.keys():
-        if key not in expected:
-            raise ValueError(f"Json key '{key}' that was returned in the API response was not explicitly checked for in the test data, suggesting this key should not be present.")
-
-        # Recursively compare nested dictionaries
-        if isinstance(actual[key], dict) and isinstance(expected[key], dict):
-            if not check_for_unexpected_keys(actual[key], expected[key]):
+def check_for_unexpected_keys(actual, expected):
+    if isinstance(actual, dict) and isinstance(expected, dict):
+        for key in actual.keys():
+            if key not in expected:
                 raise ValueError(f"Json key '{key}' that was returned in the API response was not explicitly checked for in the test data, suggesting this key should not be present.")
 
+            # Recursively compare nested dictionaries
+            if isinstance(actual[key], dict) and isinstance(expected[key], dict):
+                if not check_for_unexpected_keys(actual[key], expected[key]):
+                    raise ValueError(f"Json key '{key}' that was returned in the API response was not explicitly checked for in the test data, suggesting this key should not be present.")
+            
+            # Check if values are lists
+            elif isinstance(actual[key], list) and isinstance(expected[key], list):
+                if len(actual[key]) != len(expected[key]):
+                    raise ValueError(f"Json key '{key}' has a different number of elements in the API response compared to the test data.")
+
+                for item1, item2 in zip(actual[key], expected[key]):
+                    if not check_for_unexpected_keys(item1, item2):
+                        raise ValueError(f"Json key '{key}' has unexpected elements in the API response compared to the test data.")
     return True

@@ -12,7 +12,20 @@
       "data": {
         "RoleSkillsOverwrite": [
           {
-            "id": "::FUNC::validate_id"
+            "id": "::FUNC::validate_id",
+            "roleId": "::FUNC::validate_id",
+            "skill": {
+              "id": "::FUNC::validate_id",
+              "name": "::FUNC::validate_name"
+            }
+          },
+          {
+            "id": "::FUNC::validate_id",
+            "roleId": "::FUNC::validate_id",
+            "skill": {
+              "id": "::FUNC::validate_id",
+              "name": "::FUNC::validate_name"
+            }
           }
         ]
       }
@@ -34,7 +47,28 @@
       "data": {
         "RoleSkillsOverwrite": [
           {
-            "id": "::FUNC::validate_id"
+            "id": "::FUNC::validate_id",
+            "roleId": "::FUNC::validate_id",
+            "skill": {
+              "id": "::FUNC::validate_id",
+              "name": "::FUNC::validate_name"
+            }
+          },
+          {
+            "id": "::FUNC::validate_id",
+            "roleId": "::FUNC::validate_id",
+            "skill": {
+              "id": "::FUNC::validate_id",
+              "name": "::FUNC::validate_name"
+            }
+          },
+          {
+            "id": "::FUNC::validate_id",
+            "roleId": "::FUNC::validate_id",
+            "skill": {
+              "id": "::FUNC::validate_id",
+              "name": "::FUNC::validate_name"
+            }
           }
         ]
       }
