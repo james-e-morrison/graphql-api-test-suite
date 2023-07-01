@@ -28,13 +28,19 @@ def verify_datetime(request_datetime: str, response_datetime: str, t_diff = 1):
     # allow up to a 1 second difference in time due to slow server. During high load this may (correctly) fail
     request_datetime =  datetime.strptime(request_datetime, "%Y-%m-%dT%H:%M:%S")
     date_parts[0] = datetime.strptime(date_parts[0], "%Y-%m-%dT%H:%M:%S") # remove microseconds from api datetime
-    #print(date_parts[0], request_datetime, request_datetime + timedelta(seconds=2))
     time_diff = date_parts[0] - request_datetime
     if not date_parts[0] >= request_datetime - timedelta(seconds=t_diff):
         #raise ValueError(date_parts[0], request_datetime)
         raise ValueError(f"Datetime returned by the API was too distant from expected (Request time). Request time: {date_parts[0]}, API time: {request_datetime}")
     if not date_parts[0] <= (request_datetime + timedelta(seconds=t_diff)):
         raise ValueError(f"Datetime returned by the API was too distant from expected (Request time). Request time: {date_parts[0]}, API time: {request_datetime}")
+
+
+def verify_api_response(expected: dict, actual: dict) -> bool:
+    compare_json(expected, actual)
+    check_for_unexpected_keys(actual, expected)
+    return True
+
 
 
 def compare_json(expected: dict, actual: dict) -> bool:
@@ -47,26 +53,24 @@ def compare_json(expected: dict, actual: dict) -> bool:
     if isinstance(expected, dict) and isinstance(actual, dict):
         for key in expected.keys():
             if key not in actual:
-                raise ValueError(f"Expected key missing in response. Missing key: {key}")
+                raise ValueError(f"Expected key missing in API response. Missing key: {key}")
 
             if not compare_json(expected[key], actual[key]):
                 raise ValueError(f"Expected value mismatch. Expected: {key} = {expected[key]}, Actual: {key} = {actual[key]}")
 
     elif isinstance(expected, list) and isinstance(actual, list):
+        if len(expected) == 0 and len(actual) != 0 or len(expected) != 0 and len(actual) == 0:
+            assert expected == actual
         for item1, item2 in zip(expected, actual):
             if not compare_json(item1, item2):
                 return False
 
-    else:
-        if expected:
-            if '::LAMBDA::' in expected:
-                print('lamby')
-                assert eval(expected.replace('::LAMBDA::', ''))(actual)
-            elif '::FUNC::' in expected:
-                eval(expected.replace('::FUNC::', ''))(actual)
-        elif expected != actual:
-            raise ValueError(f"Expected json '{expected}' does not match actual json: '{actual}'")
-
+    elif expected and '::FUNC::' in str(expected):
+        eval(expected.replace('::FUNC::', ''))(actual)
+    
+    elif expected != actual:
+        raise ValueError(f"Expected json value '{expected}' does not match actual value: '{actual}'")
+    
     return True
 
 
@@ -84,14 +88,34 @@ def validate_datetime_format(dt: str):
     assert re.match(microsecs_pattern, date_parts[1]) != None
     datetime.strptime(date_parts[0], "%Y-%m-%dT%H:%M:%S")
         
-    
-
 
 def validate_json(data: str, schema_name: str):
-    #data = json.loads(data)
+    '''
+    Validate the given json against a schema
+    '''
     schema = json_schema_loader(schema_name)
-    #jsonschema.validate(data, schema)
     try:
         jsonschema.validate(data, schema)
     except jsonschema.exceptions.ValidationError as e:
         raise jsonschema.exceptions.ValidationError(f"JSON data failed schema validation with error message: {e.message}. Path: {e.path}")
+
+
+def check_for_unexpected_keys(actual: dict, expected: dict) -> bool:
+    '''
+    Recursively compare that every key returned in the api response is explicitly checked for
+    in the test data's expected response. This ensures that no unexpected values sneak into the api
+    response without getting caught. This behaviour is already partially covered by validating JSON
+    against a schema but this allows for us to catch valid objects and fields (as allowed by the schema)
+    from appearing when they are not expected. This helps enforce snapshot testing.
+    '''
+    
+    for key in actual.keys():
+        if key not in expected:
+            raise ValueError(f"Json key '{key}' that was returned in the API response was not explicitly checked for in the test data, suggesting this key should not be present.")
+
+        # Recursively compare nested dictionaries
+        if isinstance(actual[key], dict) and isinstance(expected[key], dict):
+            if not check_for_unexpected_keys(actual[key], expected[key]):
+                raise ValueError(f"Json key '{key}' that was returned in the API response was not explicitly checked for in the test data, suggesting this key should not be present.")
+
+    return True

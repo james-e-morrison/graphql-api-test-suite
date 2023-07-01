@@ -1,7 +1,6 @@
 import pytest, re
-from utils.test_utils import convert_datetime, compare_json, validate_json, verify_datetime
+from utils.test_utils import convert_datetime, validate_json, verify_datetime, verify_api_response
 from utils.call_api import post_to_api
-from utils.api_utils import remove_role
 from datetime import datetime
 
 
@@ -9,21 +8,23 @@ def test_role_create_one(cleanup, test_data):
     '''Test the RoleCreateOne mutation.'''
 
     resp = post_to_api(payload={"query": test_data['payload']})
-    cleanup['roles'].append(resp.json()['data']['RoleCreateOne']['id'])
+    print(resp.text)
+    r_json = resp.json()
+    cleanup['roles'].append(r_json['data']['RoleCreateOne']['id'])
     assert resp.status_code == test_data['expected-status-code']
-    r_json = resp.json()['data']
+    
 
     # check the returned json contains all the expected values
-    assert compare_json(test_data['expected-response'], r_json)
+    assert verify_api_response(test_data['expected-response'], r_json)
 
-    if 'createdAt' in test_data['expected-response']['RoleCreateOne']:
-        verify_datetime(resp.headers['Date'], r_json['RoleCreateOne']['createdAt'])
-    if 'updatedAt' in test_data['expected-response']['RoleCreateOne']:
-        verify_datetime(resp.headers['Date'], r_json['RoleCreateOne']['updatedAt'])
+    if 'createdAt' in test_data['expected-response']['data']['RoleCreateOne']:
+        verify_datetime(resp.headers['Date'], r_json['data']['RoleCreateOne']['createdAt'])
+    if 'updatedAt' in test_data['expected-response']['data']['RoleCreateOne']:
+        verify_datetime(resp.headers['Date'], r_json['data']['RoleCreateOne']['updatedAt'])
 
     # if the test includes a schema then validate the api response against it
     if 'schema' in test_data:
-        validate_json(resp.json(), test_data['schema'])
+        validate_json(r_json, test_data['schema'])
 
 
 def test_end_to_end(test_data, cleanup):
@@ -57,10 +58,8 @@ def test_end_to_end(test_data, cleanup):
 
     print(payload)
     resp = post_to_api(payload=payload)
-    print(resp.json())
+    print(resp.text)
 
     assert resp.status_code == test_data['expected-status-code']
-    r_json = resp.json()['data']
-
-    # check the returned json contains all the expected values
-    assert compare_json(test_data['expected-response'], r_json)
+    r_json = resp.json()
+    assert verify_api_response(test_data['expected-response'], r_json)

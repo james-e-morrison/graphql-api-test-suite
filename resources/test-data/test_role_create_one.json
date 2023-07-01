@@ -4,13 +4,15 @@
     "payload": "mutation{RoleCreateOne(name: \"QA Manager\"){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "createdAt": "::FUNC::validate_datetime_format",
-        "updatedAt": "::FUNC::validate_datetime_format",
-        "id": "::FUNC::validate_id",
-        "name": "QA Manager",
-        "deletedAt": null,
-        "skills": []
+      "data": {
+        "RoleCreateOne":{
+          "createdAt": "::FUNC::validate_datetime_format",
+          "updatedAt": "::FUNC::validate_datetime_format",
+          "id": "::FUNC::validate_id",
+          "name": "QA Manager",
+          "deletedAt": null,
+          "skills": []
+        }
       }
     },
     "schema": "roleCreateOne"
@@ -21,13 +23,15 @@
     "payload": "mutation{RoleCreateOne(name: \"\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "createdAt": "::FUNC::validate_datetime_format",
-        "updatedAt": "::FUNC::validate_datetime_format",
-        "id": "::FUNC::validate_id",
-        "name": "",
-        "deletedAt": null,
-        "skills": []
+      "data": {
+        "RoleCreateOne":{
+          "createdAt": "::FUNC::validate_datetime_format",
+          "updatedAt": "::FUNC::validate_datetime_format",
+          "id": "::FUNC::validate_id",
+          "name": "",
+          "deletedAt": null,
+          "skills": []
+        }
       }
     },
     "schema": "roleCreateOne"
@@ -38,13 +42,15 @@
     "payload": "mutation{RoleCreateOne(name: \"123456789\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "id": "::FUNC::validate_id",
-        "createdAt": "::FUNC::validate_datetime_format",
-        "updatedAt": "::FUNC::validate_datetime_format",
-        "name": "123456789",
-        "deletedAt": null,
-        "skills": []
+      "data": {
+        "RoleCreateOne":{
+          "id": "::FUNC::validate_id",
+          "createdAt": "::FUNC::validate_datetime_format",
+          "updatedAt": "::FUNC::validate_datetime_format",
+          "name": "123456789",
+          "deletedAt": null,
+          "skills": []
+        }
       }
     },
     "schema": "roleCreateOne"
@@ -55,13 +61,15 @@
     "payload": "mutation{RoleCreateOne(name: \"a12v345asd6fd78a9\" ){id, name, createdAt, updatedAt, deletedAt,skills{id}}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "createdAt": "::FUNC::validate_datetime_format",
-        "updatedAt": "::FUNC::validate_datetime_format",
-        "id": "::FUNC::validate_id",
-        "name": "a12v345asd6fd78a9",
-        "deletedAt": null,
-        "skills": []
+      "data": {
+        "RoleCreateOne":{
+          "createdAt": "::FUNC::validate_datetime_format",
+          "updatedAt": "::FUNC::validate_datetime_format",
+          "id": "::FUNC::validate_id",
+          "name": "a12v345asd6fd78a9",
+          "deletedAt": null,
+          "skills": []
+        }
       }
     },
     "schema": "roleCreateOne"
@@ -73,13 +81,15 @@
     "payload": "mutation{RoleCreateOne(name: \"Business Analyst\"){id, name, createdAt, updatedAt, deletedAt, skills{id, roleId, createdAt, deletedAt, skillId, updatedAt, weight, skill{id, name, createdAt, deletedAt, updatedAt}}}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "id": "::FUNC::validate_id",
-        "createdAt": "::FUNC::validate_datetime_format",
-        "updatedAt": "::FUNC::validate_datetime_format",
-        "name": "Business Analyst",
-        "deletedAt": null,
-        "skills": []
+      "data": {
+        "RoleCreateOne":{
+          "id": "::FUNC::validate_id",
+          "createdAt": "::FUNC::validate_datetime_format",
+          "updatedAt": "::FUNC::validate_datetime_format",
+          "name": "Business Analyst",
+          "deletedAt": null,
+          "skills": []
+        }
       }
     },
     "schema": "roleCreateOne"
@@ -90,9 +100,11 @@
     "payload": "mutation{RoleCreateOne(name: \"SDET\"){id, name}}",
     "expected-status-code": 200,
     "expected-response": {
-      "RoleCreateOne":{
-        "id": "::FUNC::validate_id",
-        "name": "SDET"
+      "data": {
+        "RoleCreateOne":{
+          "id": "::FUNC::validate_id",
+          "name": "SDET"
+        }
       }
     },
     "schema": "roleCreateOne"
