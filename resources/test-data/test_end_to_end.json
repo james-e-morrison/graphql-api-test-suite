@@ -9,6 +9,11 @@
     "payload": "mutation($role_id: Int!, $skill_id1: Int!, $skill_id2: Int!){RoleSkillsOverwrite(roleId: $role_id, skills:[{skillId: $skill_id1, weight: 0.6}, {skillId:$skill_id2, weight: 0.4}]){roleId, id, roleId, skill{id, name}}}",
     "expected-status-code": 200,
     "expected-response": {
+      "RoleSkillsOverwrite": [
+        {
+          "id": "::FUNC::validate_id"
+        }
+      ]
     },
     "schema": "roleCreateOne"
   },

@@ -5,6 +5,9 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "createdAt": "::FUNC::validate_datetime_format",
+        "updatedAt": "::FUNC::validate_datetime_format",
+        "id": "::FUNC::validate_id",
         "name": "QA Manager",
         "deletedAt": null,
         "skills": []
@@ -19,6 +22,9 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "createdAt": "::FUNC::validate_datetime_format",
+        "updatedAt": "::FUNC::validate_datetime_format",
+        "id": "::FUNC::validate_id",
         "name": "",
         "deletedAt": null,
         "skills": []
@@ -33,6 +39,9 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "id": "::FUNC::validate_id",
+        "createdAt": "::FUNC::validate_datetime_format",
+        "updatedAt": "::FUNC::validate_datetime_format",
         "name": "123456789",
         "deletedAt": null,
         "skills": []
@@ -47,6 +56,9 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "createdAt": "::FUNC::validate_datetime_format",
+        "updatedAt": "::FUNC::validate_datetime_format",
+        "id": "::FUNC::validate_id",
         "name": "a12v345asd6fd78a9",
         "deletedAt": null,
         "skills": []
@@ -62,6 +74,9 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "id": "::FUNC::validate_id",
+        "createdAt": "::FUNC::validate_datetime_format",
+        "updatedAt": "::FUNC::validate_datetime_format",
         "name": "Business Analyst",
         "deletedAt": null,
         "skills": []
@@ -76,6 +91,7 @@
     "expected-status-code": 200,
     "expected-response": {
       "RoleCreateOne":{
+        "id": "::FUNC::validate_id",
         "name": "SDET"
       }
     },

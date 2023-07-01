@@ -16,9 +16,9 @@ def test_role_create_one(cleanup, test_data):
     # check the returned json contains all the expected values
     assert compare_json(test_data['expected-response'], r_json)
 
-    if 'createdAt' in r_json['RoleCreateOne']:
+    if 'createdAt' in test_data['expected-response']['RoleCreateOne']:
         verify_datetime(resp.headers['Date'], r_json['RoleCreateOne']['createdAt'])
-    if 'updatedAt' in r_json['RoleCreateOne']:
+    if 'updatedAt' in test_data['expected-response']['RoleCreateOne']:
         verify_datetime(resp.headers['Date'], r_json['RoleCreateOne']['updatedAt'])
 
     # if the test includes a schema then validate the api response against it
