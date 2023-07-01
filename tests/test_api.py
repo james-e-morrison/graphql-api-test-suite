@@ -8,7 +8,7 @@ def test_role_create_one(cleanup, test_data):
     '''Test the RoleCreateOne mutation.'''
 
     resp = post_to_api(payload={"query": test_data['payload']})
-    print(resp.text)
+    print(resp.request.body)
     r_json = resp.json()
     cleanup['roles'].append(r_json['data']['RoleCreateOne']['id'])
     assert resp.status_code == test_data['expected-status-code']
@@ -30,19 +30,22 @@ def test_role_create_one(cleanup, test_data):
 def test_end_to_end(test_data, cleanup):
     # create role
     resp = post_to_api(payload={"query": test_data['create-role']})
-    cleanup['roles'].append(resp.json()['data']['RoleCreateOne']['id']) # hold the ids for deletion via the post-test cleanup
-
-    # create skills
-    for skill in test_data['skills']:
-        print(test_data['skills'][skill])
+    r_json = resp.json()
+    cleanup['roles'].append(r_json['data']['RoleCreateOne']['id']) # hold the ids for deletion via the post-test cleanup
+ 
+    # create skills and ensure a unique name
+    for index, skill in enumerate(test_data['skills']):
         original_string = test_data['skills'][skill]
         skill_s = re.search('\"(.*?)\"', original_string).group(1)
         replacement_skill = skill_s + "_" + datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
         replacement_string = test_data['skills'][skill].replace(skill_s, replacement_skill)
-        print(replacement_string)
+        #print(replacement_string)
         resp = post_to_api(payload={"query": replacement_string})
-        print(resp.json())
-        cleanup['skills'].append(resp.json()['data']['SkillCreateOne']['id'])
+        r_json = resp.json()
+        cleanup['skills'].append(r_json['data']['SkillCreateOne']['id'])
+        # put name back into test data
+        test_data['expected-response']['data']['RoleSkillsOverwrite'][index]['skill']['name'] = replacement_skill
+    
     
     # create role skill
     payload = {
@@ -56,9 +59,9 @@ def test_end_to_end(test_data, cleanup):
         skill_var = 'skill_id' + str(index+1)
         payload['variables'][skill_var] = id
 
-    print(payload)
+    #print(payload)
     resp = post_to_api(payload=payload)
-    print(resp.text)
+    #print(resp.text)
 
     assert resp.status_code == test_data['expected-status-code']
     r_json = resp.json()

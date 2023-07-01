@@ -6,7 +6,7 @@
       "create-skill-one": "mutation{SkillCreateOne(name: \"Typescript\"){id}}",
       "create-skill-two": "mutation{SkillCreateOne(name: \"Java\"){id}}"
     },
-    "payload": "mutation($role_id: Int!, $skill_id1: Int!, $skill_id2: Int!){RoleSkillsOverwrite(roleId: $role_id, skills:[{skillId: $skill_id1, weight: 0.6}, {skillId:$skill_id2, weight: 0.4}]){roleId, id, roleId, skill{id, name}}}",
+    "payload": "mutation($role_id: Int!, $skill_id1: Int!, $skill_id2: Int!){RoleSkillsOverwrite(roleId: $role_id, skills:[{skillId: $skill_id1, weight: 0.6}, {skillId:$skill_id2, weight: 0.4}]){roleId, id, roleId, weight, skill{id, name}}}",
     "expected-status-code": 200,
     "expected-response": {
       "data": {
@@ -14,23 +14,25 @@
           {
             "id": "::FUNC::validate_id",
             "roleId": "::FUNC::validate_id",
+            "weight": 0.6,
             "skill": {
               "id": "::FUNC::validate_id",
-              "name": "::FUNC::validate_name"
+              "name": "Typescript"
             }
           },
           {
             "id": "::FUNC::validate_id",
+            "weight": 0.4,
             "roleId": "::FUNC::validate_id",
             "skill": {
               "id": "::FUNC::validate_id",
-              "name": "::FUNC::validate_name"
+              "name": "Java"
             }
           }
         ]
       }
     },
-    "schema": "roleCreateOne"
+    "schema": "??"
   },
 
   "tc 2.2 Create a role skill with three skills": {
@@ -73,6 +75,6 @@
         ]
       }
     },
-    "schema": "roleCreateOne"
+    "schema": "??"
   }
 }
