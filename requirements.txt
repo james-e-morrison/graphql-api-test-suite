@@ -2,4 +2,5 @@ jsonschema==3.2.0
 pytest==7.3.1
 pytest-xdist==3.3.1
 pytest-repeat==0.9.1
+pytest-html==3.2.0
 Requests==2.31.0
