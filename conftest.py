@@ -22,8 +22,12 @@ def pytest_generate_tests(metafunc: object):
     ids = get_test_ids(test_name)
     metafunc.parametrize("test_data", test_data, ids=ids)
 
+
 @pytest.fixture(scope='function')
 def cleanup():
+    '''Function run after tests to delete and role and kills created.
+        IDs are collected during test execution and passed to this function for deletion
+    '''
     ids = {
         "roles": [],
         "skills": []

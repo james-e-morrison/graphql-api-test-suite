@@ -108,7 +108,7 @@ def remove_role(id: int) -> None:
         }
     }
 
-    post_to_api(payload=payload, log=False)
+    post_to_api(payload=payload)
 
 
 def remove_skill(id: int) -> None:

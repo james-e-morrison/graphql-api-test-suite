@@ -23,7 +23,7 @@ def verify_datetime(request_datetime: str, response_datetime: str, t_diff = 1):
     request_datetime = convert_datetime(request_datetime)
     microsecs_pattern = r'^\d{1,9}Z$'
     date_parts = response_datetime.split(".")
-    assert re.match(microsecs_pattern, date_parts[1]) != None
+    assert re.match(microsecs_pattern, date_parts[1]) is not None
 
     # allow up to a 1 second difference in time due to slow server. During high load this may (correctly) fail
     request_datetime =  datetime.strptime(request_datetime, "%Y-%m-%dT%H:%M:%S")
@@ -37,10 +37,11 @@ def verify_datetime(request_datetime: str, response_datetime: str, t_diff = 1):
 
 
 def verify_api_response(expected: dict, actual: dict) -> bool:
+    '''Single function to both verify the expected values in a api response and check no addtional unexpected keys are
+    prent in the api response'''
     compare_json(expected, actual)
     check_for_unexpected_keys(actual, expected)
     return True
-
 
 
 def compare_json(expected: dict, actual: dict) -> bool:
