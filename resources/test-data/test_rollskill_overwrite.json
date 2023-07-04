@@ -31,8 +31,7 @@
           }
         ]
       }
-    },
-    "schema": "??"
+    }
   },
 
   "tc 2.2 Create a role skill with three skills": {
@@ -74,7 +73,6 @@
           }
         ]
       }
-    },
-    "schema": "??"
+    }
   }
 }
