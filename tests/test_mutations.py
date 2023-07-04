@@ -9,7 +9,6 @@ def test_role_create_one(cleanup, test_data):
     '''Test the RoleCreateOne mutation.'''
 
     resp = post_to_api(payload={"query": test_data['payload']})
-    print(resp.request.body)
     r_json = resp.json()
     cleanup['roles'].append(r_json['data']['RoleCreateOne']['id'])
     assert resp.status_code == test_data['expected-status-code']
